@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ManufacturerController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/products', [ProductController::class, 'getProductsList']);
+//Route::get('/manufacturers', [ManufacturerController::class, 'index']);
+Route::resources([
+    'products' => ProductController::class,
+    'manufacturers' => ManufacturerController::class,
+]);
