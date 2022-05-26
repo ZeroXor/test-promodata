@@ -46,7 +46,8 @@ class ProductController extends Controller
     {
         $product = $this->model->createProduct($request);
         return redirect()
-            ->route('products.index', ['product' => $product->id]);
+            ->route('products.index', ['product' => $product->id])
+            ->with('success', 'Запись успешно создана!');
     }
 
     /**
@@ -70,7 +71,8 @@ class ProductController extends Controller
     {
         $product = $this->model->updateProduct($request, $product);
         return redirect()
-            ->route('products.index', ['product' => $product->id]);
+            ->route('products.index', ['product' => $product->id])
+            ->with('success', 'Запись успешно обновлена!');
     }
 
     /**
@@ -81,6 +83,7 @@ class ProductController extends Controller
     {
         $product->delete();
         return redirect()
-            ->route('products.index');
+            ->route('products.index')
+            ->with('success', 'Запись успешно удалена!');
     }
 }

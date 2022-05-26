@@ -24,7 +24,7 @@ class ManufacturerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|max:255|unique:manufacturers,name,' . $this->id,
+            'name' => 'required|max:255|unique:manufacturers,name,' . $this->route('manufacturer')->id,
         ];
     }
 }

@@ -49,7 +49,8 @@ class ManufacturerController extends Controller
     {
         $manufacturer = $this->model->createManufacturer($request);
         return redirect()
-            ->route('manufacturers.index', ['manufacturer' => $manufacturer->id]);
+            ->route('manufacturers.index', ['manufacturer' => $manufacturer->id])
+            ->with('success', 'Запись успешно создана!');
     }
 
     /**
@@ -72,7 +73,8 @@ class ManufacturerController extends Controller
     {
         $manufacturer = $this->model->updateManufacturer($request, $manufacturer);
         return redirect()
-            ->route('manufacturers.index', ['manufacturer' => $manufacturer->id])->with('success','Item created successfully!');
+            ->route('manufacturers.index', ['manufacturer' => $manufacturer->id])
+            ->with('success', 'Запись успешно обновлена!');
     }
 
     /**
@@ -81,9 +83,10 @@ class ManufacturerController extends Controller
      */
     public function destroy(Manufacturer $manufacturer)
     {
-        if ($this->model->deleteManufacturer()) {
+        if ($this->model->deleteManufacturer($manufacturer)) {
             return redirect()
-                ->route('manufacturers.index');
+                ->route('manufacturers.index')
+                ->with('success', 'Запись успешно удалена!');
         }
     }
 }
