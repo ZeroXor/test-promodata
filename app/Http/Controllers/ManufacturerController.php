@@ -2,12 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ManufacturerRequest;
 use App\Models\Manufacturer;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ManufacturerController extends Controller
 {
+    protected $model;
+
+    public function __construct()
+    {
+        $this->model = new Manufacturer();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -34,13 +42,12 @@ class ManufacturerController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param ManufacturerRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ManufacturerRequest $request)
     {
-        $data = $request->all();
-        $manufacturer = Manufacturer::create($data);
+        $manufacturer = $this->model->createManufacturer($request);
         return redirect()
             ->route('manufacturers.index', ['manufacturer' => $manufacturer->id]);
     }
@@ -57,26 +64,26 @@ class ManufacturerController extends Controller
     }
 
     /**
-     * @param Request $request
+     * @param ManufacturerRequest $request
      * @param Manufacturer $manufacturer
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Manufacturer $manufacturer) {
-        $data = $request->all();
-        $manufacturer->update($data);
+    public function update(ManufacturerRequest $request, Manufacturer $manufacturer)
+    {
+        $manufacturer = $this->model->updateManufacturer($request, $manufacturer);
         return redirect()
-            ->route('manufacturers.index', ['manufacturer' => $manufacturer->id]);
+            ->route('manufacturers.index', ['manufacturer' => $manufacturer->id])->with('success','Item created successfully!');
     }
 
     /**
      * @param Manufacturer $manufacturer
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function destroy(Manufacturer $manufacturer) {
-        if (empty($manufacturer->products()->count())) {
-            $manufacturer->delete();
+    public function destroy(Manufacturer $manufacturer)
+    {
+        if ($this->model->deleteManufacturer()) {
+            return redirect()
+                ->route('manufacturers.index');
         }
-        return redirect()
-            ->route('manufacturers.index');
     }
 }
